@@ -30,13 +30,21 @@ const HOW_IT_WORKS = [
 ];
 
 export default async function Home() {
-  const [{ data: cities }, { data: allDorms }] = await Promise.all([
+  const [{ data: cities }, { data: rawDorms }] = await Promise.all([
     supabase.from("cities").select("name, slug, dorms(count)"),
     supabase
       .from("dorms")
       .select("name, slug, cities(name, slug)")
       .order("name"),
   ]);
+
+  // Supabase types nested relations as arrays when types aren't generated.
+  // Map to the expected shape so no unsafe cast is needed.
+  const allDorms: DormEntry[] = (rawDorms ?? []).map((d) => ({
+    name: d.name,
+    slug: d.slug,
+    cities: (Array.isArray(d.cities) ? d.cities[0] : d.cities) ?? null,
+  }));
 
   return (
     <div>
@@ -68,7 +76,7 @@ export default async function Home() {
           lebt – bevor du unterschreibst.
         </p>
         <div className="relative mt-10">
-          <DormSearch dorms={(allDorms ?? []) as DormEntry[]} />
+          <DormSearch dorms={allDorms} />
         </div>
       </section>
 
