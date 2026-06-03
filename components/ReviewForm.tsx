@@ -4,40 +4,89 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 const RATING_CATEGORIES = [
-  { key: "rating_overall", label: "Gesamt", required: true },
-  { key: "rating_price", label: "Preis-Leistung", required: false },
-  { key: "rating_location", label: "Lage und ÖPNV", required: false },
-  { key: "rating_cleanliness", label: "Sauberkeit", required: false },
-  { key: "rating_internet", label: "Internet", required: false },
-  { key: "rating_noise", label: "Lautstärke", required: false },
-  { key: "rating_community", label: "Gemeinschaft", required: false },
-  { key: "rating_management", label: "Verwaltung / Hausmeister", required: false },
-  { key: "rating_safety", label: "Sicherheit", required: false },
+  {
+    key: "rating_overall",
+    label: "Gesamt",
+    description: "Dein Gesamteindruck",
+    required: true,
+  },
+  {
+    key: "rating_price",
+    label: "Preis-Leistung",
+    description: "Stimmt der Preis für das Gebotene?",
+    required: false,
+  },
+  {
+    key: "rating_location",
+    label: "Lage / ÖPNV",
+    description: "Anbindung, Wege zur Uni und in die Stadt",
+    required: false,
+  },
+  {
+    key: "rating_cleanliness",
+    label: "Sauberkeit",
+    description: "Zustand von Zimmer und Gemeinschaftsräumen",
+    required: false,
+  },
+  {
+    key: "rating_internet",
+    label: "Internet",
+    description: "Geschwindigkeit und Stabilität",
+    required: false,
+  },
+  {
+    key: "rating_noise",
+    label: "Lautstärke",
+    description: "Lärm im Haus und von außen",
+    required: false,
+  },
+  {
+    key: "rating_community",
+    label: "Gemeinschaft",
+    description: "Kontakt zu Mitbewohnenden, Atmosphäre",
+    required: false,
+  },
+  {
+    key: "rating_management",
+    label: "Verwaltung / Hausmeister",
+    description: "Erreichbarkeit und Hilfsbereitschaft",
+    required: false,
+  },
+  {
+    key: "rating_safety",
+    label: "Sicherheit",
+    description: "Sicheres Gefühl im und ums Gebäude",
+    required: false,
+  },
 ] as const;
 
 type RatingKey = (typeof RATING_CATEGORIES)[number]["key"];
 
-function RatingButtons({
+function StarRating({
   value,
   onChange,
 }: {
   value: number | null;
   onChange: (v: number) => void;
 }) {
+  const [hovered, setHovered] = useState<number | null>(null);
+  const display = hovered ?? value ?? 0;
+
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1">
       {[1, 2, 3, 4, 5].map((n) => (
         <button
           key={n}
           type="button"
           onClick={() => onChange(n)}
-          className={`w-10 h-10 rounded-lg border text-sm font-semibold transition-colors ${
-            value === n
-              ? "bg-blue-600 border-blue-600 text-white shadow-sm"
-              : "border-slate-300 text-slate-500 hover:border-blue-400 hover:text-blue-600 bg-white"
-          }`}
+          onMouseEnter={() => setHovered(n)}
+          onMouseLeave={() => setHovered(null)}
+          aria-label={`${n} Stern${n !== 1 ? "e" : ""}`}
+          className="text-3xl leading-none transition-transform hover:scale-110 focus:outline-none"
         >
-          {n}
+          <span className={display >= n ? "text-amber-400" : "text-slate-200"}>
+            ★
+          </span>
         </button>
       ))}
     </div>
@@ -76,7 +125,9 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
       return;
     }
     if (!confirmed) {
-      setError("Bitte bestätige, dass die Bewertung auf deiner eigenen Erfahrung beruht.");
+      setError(
+        "Bitte bestätige, dass die Bewertung auf deiner eigenen Erfahrung beruht."
+      );
       return;
     }
 
@@ -100,7 +151,9 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
     setLoading(false);
 
     if (supabaseError) {
-      setError("Beim Speichern ist ein Fehler aufgetreten. Bitte versuche es erneut.");
+      setError(
+        "Beim Speichern ist ein Fehler aufgetreten. Bitte versuche es erneut."
+      );
       return;
     }
 
@@ -116,25 +169,38 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-10">
 
       {/* Rating categories */}
-      <div className="space-y-5">
-        {RATING_CATEGORIES.map(({ key, label, required }) => (
-          <div key={key} className="flex items-center justify-between gap-4">
-            <label className="text-sm font-medium text-slate-700 shrink-0 w-44">
-              {label}
-              {required && <span className="text-red-500 ml-0.5">*</span>}
-            </label>
-            <RatingButtons value={ratings[key]} onChange={(v) => setRating(key, v)} />
-          </div>
-        ))}
+      <div>
+        <p className="text-xs text-slate-400 mb-6">
+          1 Stern = schlecht &nbsp;·&nbsp; 5 Sterne = sehr gut
+        </p>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {RATING_CATEGORIES.map(({ key, label, description, required }) => (
+            <div key={key} className="space-y-2">
+              <div>
+                <p className="text-sm font-medium text-slate-700">
+                  {label}
+                  {required && (
+                    <span className="text-red-500 ml-0.5">*</span>
+                  )}
+                </p>
+                <p className="text-xs text-slate-400 mt-0.5">{description}</p>
+              </div>
+              <StarRating
+                value={ratings[key]}
+                onChange={(v) => setRating(key, v)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Would move again */}
-      <div className="flex items-center gap-4">
-        <p className="text-sm font-medium text-slate-700 w-44 shrink-0">
-          Nochmal einziehen?
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-slate-700">
+          Würdest du nochmal hier einziehen?
         </p>
         <div className="flex gap-3">
           {(["Ja", "Nein"] as const).map((label) => {
@@ -144,7 +210,7 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
                 key={label}
                 type="button"
                 onClick={() => setWouldMoveAgain(val)}
-                className={`px-5 py-2 rounded-lg border text-sm font-medium transition-colors ${
+                className={`px-6 py-2 rounded-lg border text-sm font-medium transition-colors ${
                   wouldMoveAgain === val
                     ? "bg-blue-600 border-blue-600 text-white"
                     : "border-slate-300 text-slate-500 hover:border-blue-400 hover:text-blue-600 bg-white"
@@ -158,21 +224,25 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
       </div>
 
       {/* Comment */}
-      <div>
-        <p className="text-xs text-slate-400 mb-2">
-          Bitte beschreibe deine eigene Erfahrung. Keine Namen von Mitarbeitenden oder
-          Bewohnern, keine Beleidigungen.
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-slate-700">
+          Kommentar{" "}
+          <span className="font-normal text-slate-400">(optional)</span>
+        </p>
+        <p className="text-xs text-slate-400">
+          Bitte beschreibe deine eigene Erfahrung. Keine Namen von
+          Mitarbeitenden oder Bewohnern, keine Beleidigungen.
         </p>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={5}
-          placeholder="Dein Kommentar (optional)"
+          placeholder="Dein Kommentar…"
           className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
-      {/* Confirmation checkbox */}
+      {/* Confirmation */}
       <label className="flex items-start gap-3 cursor-pointer">
         <input
           type="checkbox"
@@ -181,7 +251,8 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
           className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
         />
         <span className="text-sm text-slate-600">
-          Ich bestätige, dass diese Bewertung auf meiner eigenen Erfahrung beruht.
+          Ich bestätige, dass diese Bewertung auf meiner eigenen Erfahrung
+          beruht.
         </span>
       </label>
 

@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import DormList, { type DormItem } from "@/components/DormList";
 
-export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
+export default async function CityPage({
+  params,
+}: {
+  params: Promise<{ city: string }>;
+}) {
   const { city: citySlug } = await params;
 
   const { data: city } = await supabase
@@ -13,10 +18,34 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
   if (!city) notFound();
 
-  const { data: dorms } = await supabase
+  const { data: rawDorms } = await supabase
     .from("dorms")
-    .select("name, slug, operator")
+    .select(
+      "id, name, slug, operator, address, rent_from, rent_to, reviews(rating_overall, status)"
+    )
     .eq("city_id", city.id);
+
+  const dorms: DormItem[] = (rawDorms ?? []).map((d) => {
+    const reviews = (
+      d.reviews as { rating_overall: number; status: string }[]
+    ) ?? [];
+    const approved = reviews.filter((r) => r.status === "approved");
+    const avgRating =
+      approved.length > 0
+        ? approved.reduce((s, r) => s + r.rating_overall, 0) / approved.length
+        : null;
+    return {
+      id: d.id,
+      name: d.name,
+      slug: d.slug,
+      operator: d.operator as string | null,
+      address: d.address as string | null,
+      rent_from: d.rent_from as number | null,
+      rent_to: d.rent_to as number | null,
+      avgRating,
+      reviewCount: approved.length,
+    };
+  });
 
   return (
     <div>
@@ -25,30 +54,15 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       </Link>
 
       <h1 className="mt-6 text-3xl font-bold text-slate-900">{city.name}</h1>
-      <p className="mt-1 text-slate-500">Studentenwohnheime</p>
+      <p className="mt-1 text-slate-500">
+        {dorms.length} {dorms.length === 1 ? "Wohnheim" : "Wohnheime"}
+      </p>
 
       <div className="mt-8">
-        {!dorms || dorms.length === 0 ? (
+        {dorms.length === 0 ? (
           <p className="text-slate-400">Noch keine Wohnheime eingetragen.</p>
         ) : (
-          <ul className="space-y-3">
-            {dorms.map((dorm) => (
-              <li key={dorm.slug}>
-                <Link
-                  href={`/${city.slug}/${dorm.slug}`}
-                  className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md transition-all"
-                >
-                  <div>
-                    <p className="font-semibold text-slate-800">{dorm.name}</p>
-                    {dorm.operator && (
-                      <p className="text-sm text-slate-400 mt-0.5">{dorm.operator}</p>
-                    )}
-                  </div>
-                  <span className="text-blue-600 text-lg shrink-0 ml-4">→</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <DormList dorms={dorms} citySlug={city.slug} />
         )}
       </div>
     </div>

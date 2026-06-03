@@ -24,3 +24,24 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
+
+/* ── Hero circle animations ───────────────────────── */
+
+@keyframes hero-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(-14px, -20px) scale(1.05); }
+}
+
+@keyframes hero-drift {
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(16px, -14px); }
+  66%      { transform: translate(-10px, 14px); }
+}
+
+.animate-hero-float {
+  animation: hero-float 10s ease-in-out infinite;
+}
+
+.animate-hero-drift {
+  animation: hero-drift 14s ease-in-out infinite;
+}
