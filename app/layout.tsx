@@ -37,6 +37,14 @@ export default function RootLayout({
         <div className="flex-1 max-w-3xl mx-auto w-full px-4 py-10">
           {children}
         </div>
+
+        <footer className="border-t border-slate-200 bg-white">
+          <div className="max-w-3xl mx-auto px-4 py-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-400">
+            <Link href="/impressum" className="hover:text-slate-600 transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-slate-600 transition-colors">Datenschutz</Link>
+            <Link href="/bewertungsrichtlinie" className="hover:text-slate-600 transition-colors">Bewertungsrichtlinie</Link>
+          </div>
+        </footer>
       </body>
     </html>
   );
