@@ -5,12 +5,6 @@ import { supabase } from "@/lib/supabaseClient";
 
 const RATING_CATEGORIES = [
   {
-    key: "rating_overall",
-    label: "Gesamt",
-    description: "Dein Gesamteindruck",
-    required: true,
-  },
-  {
     key: "rating_price",
     label: "Preis-Leistung",
     description: "Stimmt der Preis für das Gebotene?",
@@ -95,7 +89,6 @@ function StarRating({
 
 export default function ReviewForm({ dormId }: { dormId: string }) {
   const [ratings, setRatings] = useState<Record<RatingKey, number | null>>({
-    rating_overall: null,
     rating_price: null,
     rating_location: null,
     rating_cleanliness: null,
@@ -125,10 +118,16 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
       setError("Bitte gib an, ob du aktuell hier wohnst oder früher gewohnt hast.");
       return;
     }
-    if (ratings.rating_overall === null) {
-      setError("Bitte gib mindestens eine Gesamtbewertung ab.");
+    const filledVals = (Object.values(ratings) as (number | null)[]).filter(
+      (v): v is number => v !== null
+    );
+    if (filledVals.length === 0) {
+      setError("Bitte bewerte mindestens eine Kategorie.");
       return;
     }
+    const rating_overall =
+      filledVals.reduce((a, b) => a + b, 0) / filledVals.length;
+
     if (!confirmed) {
       setError(
         "Bitte bestätige, dass die Bewertung auf deiner eigenen Erfahrung beruht."
@@ -140,7 +139,7 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
 
     const { error: supabaseError } = await supabase.from("reviews").insert({
       dorm_id: dormId,
-      rating_overall: ratings.rating_overall,
+      rating_overall,
       rating_price: ratings.rating_price,
       rating_location: ratings.rating_location,
       rating_cleanliness: ratings.rating_cleanliness,

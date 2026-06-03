@@ -234,7 +234,7 @@ export default async function DormPage({
                   </span>
                 </div>
                 {review.comment && (
-                  <p className="mt-3 text-sm text-slate-700 leading-relaxed">
+                  <p className="mt-3 text-sm text-slate-700 leading-relaxed whitespace-pre-line">
                     {review.comment}
                   </p>
                 )}

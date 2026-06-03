@@ -1,14 +1,24 @@
 type Fill = "full" | "half" | "empty";
 
 function StarSymbol({ fill }: { fill: Fill }) {
-  if (fill === "full") return <span className="text-amber-400">★</span>;
-  if (fill === "empty") return <span className="text-slate-200">★</span>;
-  // Half: amber star clipped to 50% width overlaid on a gray star
+  // All three variants use identical box model: inline-block, leading-none.
+  // This ensures equal height so the flex container aligns them on a clean baseline.
+  if (fill === "full") {
+    return (
+      <span className="inline-block leading-none text-amber-400">★</span>
+    );
+  }
+  if (fill === "empty") {
+    return (
+      <span className="inline-block leading-none text-slate-200">★</span>
+    );
+  }
+  // Half: gray base + amber overlay clipped to 50% width
   return (
     <span className="relative inline-block leading-none">
-      <span className="text-slate-200">★</span>
+      <span className="leading-none text-slate-200">★</span>
       <span
-        className="absolute inset-0 overflow-hidden text-amber-400"
+        className="absolute inset-0 overflow-hidden leading-none text-amber-400"
         style={{ width: "50%" }}
       >
         ★
@@ -27,7 +37,7 @@ export function Stars({
   const sizeClass = { sm: "text-sm", md: "text-base", lg: "text-2xl" }[size];
   return (
     <span
-      className={`inline-flex gap-px ${sizeClass}`}
+      className={`inline-flex items-center gap-px leading-none ${sizeClass}`}
       aria-label={`${rating.toFixed(1)} von 5 Sternen`}
     >
       {[1, 2, 3, 4, 5].map((i) => {
