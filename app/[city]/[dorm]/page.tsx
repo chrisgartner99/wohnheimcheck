@@ -26,7 +26,18 @@ type Review = {
   rating_safety: number | null;
   would_move_again: boolean | null;
   comment: string | null;
+  created_at: string;
+  resident_status: string | null;
 };
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
 
 function categoryAvg(reviews: Review[], key: keyof Review): number | null {
   const vals = reviews
@@ -85,11 +96,11 @@ export default async function DormPage({
   const { data: rawReviews } = await supabase
     .from("reviews")
     .select(
-      "rating_overall, rating_price, rating_location, rating_cleanliness, rating_internet, rating_noise, rating_community, rating_management, rating_safety, would_move_again, comment"
+      "rating_overall, rating_price, rating_location, rating_cleanliness, rating_internet, rating_noise, rating_community, rating_management, rating_safety, would_move_again, comment, created_at, resident_status"
     )
     .eq("dorm_id", dorm.id)
     .eq("status", "approved")
-    .order("id", { ascending: false });
+    .order("created_at", { ascending: false });
 
   const reviews: Review[] = rawReviews ?? [];
   const reviewCount = reviews.length;
@@ -196,19 +207,31 @@ export default async function DormPage({
                 className="bg-white rounded-xl border border-slate-200 shadow-sm p-5"
               >
                 <div className="flex items-center justify-between gap-3 flex-wrap">
-                  <Stars rating={review.rating_overall} size="sm" />
-                  {review.would_move_again !== null && (
-                    <span
-                      className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                        review.would_move_again
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-600"
-                      }`}
-                    >
-                      Würde {review.would_move_again ? "" : "nicht "}wieder
-                      einziehen
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Stars rating={review.rating_overall} size="sm" />
+                    {review.resident_status && (
+                      <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">
+                        {review.resident_status === "current"
+                          ? "Wohnt aktuell hier"
+                          : "Hat hier gewohnt"}
+                      </span>
+                    )}
+                    {review.would_move_again !== null && (
+                      <span
+                        className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                          review.would_move_again
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-600"
+                        }`}
+                      >
+                        Würde {review.would_move_again ? "" : "nicht "}wieder
+                        einziehen
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs text-slate-400">
+                    {formatDate(review.created_at)}
+                  </span>
                 </div>
                 {review.comment && (
                   <p className="mt-3 text-sm text-slate-700 leading-relaxed">

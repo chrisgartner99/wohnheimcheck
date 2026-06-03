@@ -105,6 +105,7 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
     rating_management: null,
     rating_safety: null,
   });
+  const [residentStatus, setResidentStatus] = useState<"current" | "former" | null>(null);
   const [wouldMoveAgain, setWouldMoveAgain] = useState<boolean | null>(null);
   const [comment, setComment] = useState("");
   const [confirmed, setConfirmed] = useState(false);
@@ -120,6 +121,10 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
     e.preventDefault();
     setError(null);
 
+    if (residentStatus === null) {
+      setError("Bitte gib an, ob du aktuell hier wohnst oder früher gewohnt hast.");
+      return;
+    }
     if (ratings.rating_overall === null) {
       setError("Bitte gib mindestens eine Gesamtbewertung ab.");
       return;
@@ -144,6 +149,7 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
       rating_community: ratings.rating_community,
       rating_management: ratings.rating_management,
       rating_safety: ratings.rating_safety,
+      resident_status: residentStatus,
       would_move_again: wouldMoveAgain,
       comment: comment.trim() || null,
     });
@@ -170,6 +176,35 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-10">
+
+      {/* Resident status */}
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-slate-700">
+          Wohnst du aktuell in diesem Wohnheim?
+          <span className="text-red-500 ml-0.5">*</span>
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3">
+          {(
+            [
+              ["current", "Ich wohne aktuell hier"],
+              ["former", "Ich habe früher hier gewohnt"],
+            ] as const
+          ).map(([val, label]) => (
+            <button
+              key={val}
+              type="button"
+              onClick={() => setResidentStatus(val)}
+              className={`px-5 py-2.5 rounded-lg border text-sm font-medium transition-colors text-left ${
+                residentStatus === val
+                  ? "bg-blue-600 border-blue-600 text-white"
+                  : "bg-white border-slate-300 text-slate-600 hover:border-blue-400 hover:text-blue-600"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Rating categories */}
       <div>
