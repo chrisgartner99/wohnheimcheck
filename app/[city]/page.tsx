@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import DormList, { type DormItem } from "@/components/DormList";
+import { PageHeader } from "@/components/ui";
 
 export default async function CityPage({
   params,
@@ -49,14 +49,13 @@ export default async function CityPage({
 
   return (
     <div>
-      <Link href="/" className="text-sm text-blue-600 hover:underline">
-        ← Alle Städte
-      </Link>
-
-      <h1 className="mt-6 text-3xl font-bold text-slate-900">{city.name}</h1>
-      <p className="mt-1 text-slate-500">
-        {dorms.length} {dorms.length === 1 ? "Wohnheim" : "Wohnheime"}
-      </p>
+      <PageHeader
+        back={{ href: "/", label: "Alle Städte" }}
+        title={city.name}
+        subtitle={`${dorms.length} ${
+          dorms.length === 1 ? "Wohnheim" : "Wohnheime"
+        }`}
+      />
 
       <div className="mt-8">
         {dorms.length === 0 ? (

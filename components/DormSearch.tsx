@@ -21,13 +21,30 @@ export default function DormSearch({ dorms }: { dorms: Dorm[] }) {
       : [];
 
   return (
-    <div className="relative max-w-md mx-auto">
+    <div className="relative w-full max-w-[520px]">
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-5 w-5"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+      </span>
       <input
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Wohnheim suchen…"
-        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Stadt oder Wohnheim suchen…"
+        className="h-14 w-full rounded-[14px] border border-slate-200 bg-white pl-12 pr-4 text-slate-800 placeholder-slate-400 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
 
       {q.length > 1 && (

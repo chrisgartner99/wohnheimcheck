@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
+import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Inter = ruhiger, gut lesbarer Fließtext
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Space Grotesk = markante Überschriften
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
@@ -24,28 +27,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-800 overflow-x-hidden">
-        <header className="bg-white">
-          <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-            <Link href="/" className="text-blue-600 font-bold text-lg tracking-tight hover:text-blue-700 transition-colors">
-              WohnheimCheck
-            </Link>
-            {/* right-side nav placeholder */}
-          </div>
-        </header>
+        <SiteHeader />
 
-        <div className="flex-1 max-w-5xl mx-auto w-full px-6 py-10">
+        <main className="flex-1 max-w-[1140px] mx-auto w-full px-6 py-10 sm:py-12">
           {children}
-        </div>
+        </main>
 
-        <footer className="border-t border-slate-200 bg-white">
-          <div className="max-w-5xl mx-auto px-6 py-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-400">
-            <Link href="/impressum" className="hover:text-slate-600 transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-slate-600 transition-colors">Datenschutz</Link>
-            <Link href="/bewertungsrichtlinie" className="hover:text-slate-600 transition-colors">Bewertungsrichtlinie</Link>
-          </div>
-        </footer>
+        <SiteFooter />
       </body>
     </html>
   );

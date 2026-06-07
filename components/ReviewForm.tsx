@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { Button } from "@/components/ui";
 
 const RATING_CATEGORIES = [
   {
@@ -167,7 +168,7 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
 
   if (submitted) {
     return (
-      <div className="rounded-xl bg-green-50 border border-green-200 p-6 text-green-800 text-sm">
+      <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-6 text-emerald-800 text-sm">
         Danke. Deine Bewertung wird nach einer kurzen Prüfung freigeschaltet.
       </div>
     );
@@ -296,13 +297,9 @@ export default function ReviewForm({ dormId }: { dormId: string }) {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-xl bg-blue-600 px-4 py-3 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm"
-      >
+      <Button type="submit" size="lg" disabled={loading} className="w-full">
         {loading ? "Wird gespeichert…" : "Bewertung abschicken"}
-      </button>
+      </Button>
     </form>
   );
 }

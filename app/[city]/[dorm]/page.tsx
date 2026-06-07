@@ -1,7 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { Stars } from "@/components/Stars";
+import ReviewList from "@/components/ReviewList";
+import { Badge, BackLink, Button, Card, RatingBar } from "@/components/ui";
 
 const CATEGORIES = [
   { key: "rating_price", label: "Preis-Leistung" },
@@ -30,15 +31,6 @@ type Review = {
   resident_status: string | null;
 };
 
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-}
-
 function categoryAvg(reviews: Review[], key: keyof Review): number | null {
   const vals = reviews
     .map((r) => r[key] as number | null)
@@ -51,22 +43,6 @@ function rentLabel(from: number | null, to: number | null): string | null {
   if (from && to) return `ca. ${from}–${to} € / Monat`;
   if (from) return `ab ${from} € / Monat`;
   return null;
-}
-
-function RatingBar({ value }: { value: number }) {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
-        <div
-          className="h-full bg-blue-400 rounded-full transition-all"
-          style={{ width: `${(value / 5) * 100}%` }}
-        />
-      </div>
-      <span className="text-sm font-medium text-slate-600 w-7 text-right tabular-nums">
-        {value.toFixed(1)}
-      </span>
-    </div>
-  );
 }
 
 export default async function DormPage({
@@ -115,46 +91,45 @@ export default async function DormPage({
 
   return (
     <div>
-      <Link href={`/${citySlug}`} className="text-sm text-blue-600 hover:underline">
-        ← {city.name}
-      </Link>
+      <BackLink href={`/${citySlug}`}>{city.name}</BackLink>
 
       {/* Header */}
-      <div className="mt-6">
-        <h1 className="text-3xl font-bold text-slate-900">{dorm.name}</h1>
+      <div className="mt-5">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 break-words">
+          {dorm.name}
+        </h1>
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500">
-          {dorm.operator && <span>{dorm.operator}</span>}
-          {dorm.address && <span>{dorm.address}</span>}
+          {dorm.operator && <span className="break-words">{dorm.operator}</span>}
+          {dorm.address && <span className="break-words">{dorm.address}</span>}
           {dorm.approx_places != null && (
             <span>ca. {dorm.approx_places} Plätze</span>
           )}
         </div>
         {rent && (
-          <span className="mt-3 inline-block text-sm bg-slate-100 text-slate-600 rounded-full px-3 py-1">
-            {rent}
-          </span>
+          <div className="mt-3">
+            <Badge tone="neutral">{rent}</Badge>
+          </div>
         )}
       </div>
 
       {/* Rating summary */}
-      <div className="mt-8 p-6 bg-white rounded-xl border border-slate-200 shadow-sm">
+      <Card className="mt-8 p-6 sm:p-7">
         {overallAvg === null ? (
           <div className="text-center py-6">
             <p className="text-slate-500 text-base">
               Noch keine Bewertungen. Sei der Erste, der dieses Wohnheim bewertet.
             </p>
-            <Link
-              href={`/${citySlug}/${dormSlug}/bewerten`}
-              className="mt-5 inline-block rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition-colors shadow-sm"
-            >
-              Jetzt bewerten
-            </Link>
+            <div className="mt-5">
+              <Button href={`/${citySlug}/${dormSlug}/bewerten`} size="lg">
+                Jetzt bewerten
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="flex flex-col sm:flex-row gap-8">
             {/* Overall */}
             <div className="flex items-center gap-4 shrink-0">
-              <p className="text-6xl font-bold text-amber-500 tabular-nums">
+              <p className="text-6xl font-bold text-slate-900 tabular-nums leading-none">
                 {overallAvg.toFixed(1)}
               </p>
               <div>
@@ -171,8 +146,13 @@ export default async function DormPage({
                 const avg = categoryAvg(reviews, key as keyof Review);
                 if (avg === null) return null;
                 return (
-                  <div key={key} className="grid grid-cols-[1fr_auto] gap-x-4 items-center sm:grid-cols-[160px_1fr]">
-                    <span className="text-xs text-slate-500 truncate">{label}</span>
+                  <div
+                    key={key}
+                    className="grid grid-cols-[1fr_auto] gap-x-4 items-center sm:grid-cols-[160px_1fr]"
+                  >
+                    <span className="text-xs text-slate-500 truncate">
+                      {label}
+                    </span>
                     <RatingBar value={avg} />
                   </div>
                 );
@@ -180,69 +160,19 @@ export default async function DormPage({
             </div>
           </div>
         )}
-      </div>
+      </Card>
 
       {/* CTA button (only when reviews exist) */}
       {overallAvg !== null && (
         <div className="mt-5">
-          <Link
-            href={`/${citySlug}/${dormSlug}/bewerten`}
-            className="inline-block rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition-colors shadow-sm"
-          >
+          <Button href={`/${citySlug}/${dormSlug}/bewerten`} size="lg">
             Wohnheim bewerten
-          </Link>
+          </Button>
         </div>
       )}
 
-      {/* Individual reviews */}
-      {reviewCount > 0 && (
-        <div className="mt-10">
-          <h2 className="text-lg font-semibold text-slate-800 mb-4">
-            Alle Bewertungen
-          </h2>
-          <ul className="space-y-4">
-            {reviews.map((review, i) => (
-              <li
-                key={i}
-                className="bg-white rounded-xl border border-slate-200 shadow-sm p-5"
-              >
-                <div className="flex items-center justify-between gap-3 flex-wrap">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Stars rating={review.rating_overall} size="sm" />
-                    {review.resident_status && (
-                      <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">
-                        {review.resident_status === "current"
-                          ? "Wohnt aktuell hier"
-                          : "Hat hier gewohnt"}
-                      </span>
-                    )}
-                    {review.would_move_again !== null && (
-                      <span
-                        className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                          review.would_move_again
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-600"
-                        }`}
-                      >
-                        Würde {review.would_move_again ? "" : "nicht "}wieder
-                        einziehen
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-xs text-slate-400">
-                    {formatDate(review.created_at)}
-                  </span>
-                </div>
-                {review.comment && (
-                  <p className="mt-3 text-sm text-slate-700 leading-relaxed whitespace-pre-line">
-                    {review.comment}
-                  </p>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {/* Individual reviews (Sortierung & Sterne-Filter clientseitig) */}
+      {reviewCount > 0 && <ReviewList reviews={reviews} />}
     </div>
   );
 }

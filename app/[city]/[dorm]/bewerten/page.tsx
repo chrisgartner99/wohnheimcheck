@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import ReviewForm from "@/components/ReviewForm";
+import { Card, PageHeader } from "@/components/ui";
 
 export default async function BewertenPage({
   params,
@@ -29,19 +29,15 @@ export default async function BewertenPage({
 
   return (
     <div>
-      <Link
-        href={`/${citySlug}/${dormSlug}`}
-        className="text-sm text-blue-600 hover:underline"
-      >
-        ← {dorm.name}
-      </Link>
+      <PageHeader
+        back={{ href: `/${citySlug}/${dormSlug}`, label: dorm.name }}
+        title="Wohnheim bewerten"
+        subtitle={dorm.name}
+      />
 
-      <h1 className="mt-6 text-3xl font-bold text-slate-900">Wohnheim bewerten</h1>
-      <p className="mt-1 text-slate-500">{dorm.name}</p>
-
-      <div className="mt-10 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+      <Card className="mt-8 p-6 sm:p-8">
         <ReviewForm dormId={dorm.id} />
-      </div>
+      </Card>
     </div>
   );
 }

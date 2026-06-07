@@ -5,11 +5,13 @@
   --foreground: #1e293b;
 }
 
+/* inline nur für Werte, die erst zur Laufzeit gesetzt werden
+   (next/font legt --font-inter / --font-space-grotesk auf <html> ab). */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
 }
 
 /* Force light mode regardless of OS setting.
@@ -22,26 +24,14 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Hero circle animations ───────────────────────── */
-
-@keyframes hero-float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%       { transform: translate(-14px, -20px) scale(1.05); }
-}
-
-@keyframes hero-drift {
-  0%, 100% { transform: translate(0, 0); }
-  33%      { transform: translate(16px, -14px); }
-  66%      { transform: translate(-10px, 14px); }
-}
-
-.animate-hero-float {
-  animation: hero-float 10s ease-in-out infinite;
-}
-
-.animate-hero-drift {
-  animation: hero-drift 14s ease-in-out infinite;
+/* Überschriften in Space Grotesk; lange Wörter sauber umbrechen. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-space-grotesk), var(--font-inter), sans-serif;
+  overflow-wrap: break-word;
 }

@@ -1,3 +1,5 @@
+import { Card, PageHeader } from "@/components/ui";
+
 export default function BewertungsrichtliniePage() {
   const rules = [
     "Bewerte nur Wohnheime, in denen du selbst gewohnt hast oder aktuell wohnst.",
@@ -12,17 +14,22 @@ export default function BewertungsrichtliniePage() {
 
   return (
     <div className="max-w-prose">
-      <h1 className="text-3xl font-bold text-slate-900">Bewertungsrichtlinie</h1>
-      <ul className="mt-8 space-y-4">
-        {rules.map((rule, i) => (
-          <li key={i} className="flex gap-3 text-slate-700">
-            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
-              {i + 1}
-            </span>
-            <span>{rule}</span>
-          </li>
-        ))}
-      </ul>
+      <PageHeader
+        title="Bewertungsrichtlinie"
+        subtitle="Damit Bewertungen fair und hilfreich bleiben, gelten diese Regeln."
+      />
+      <Card className="mt-8 p-6 sm:p-8">
+        <ul className="space-y-4">
+          {rules.map((rule, i) => (
+            <li key={i} className="flex gap-3 text-slate-700">
+              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+                {i + 1}
+              </span>
+              <span className="break-words">{rule}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
     </div>
   );
 }
