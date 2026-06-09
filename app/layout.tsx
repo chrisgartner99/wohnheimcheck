@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Instrument_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -10,10 +10,12 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-// Fraunces = markante, warm-redaktionelle Display-Schrift für Überschriften
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+// Instrument Sans = clean-moderne Sans-Serif-Display-Schrift für Überschriften.
+// Variable-Font inkl. Gewicht 600/700 (die Headlines nutzen font-semibold/bold).
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -27,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className={`${inter.variable} ${fraunces.variable} h-full antialiased`}>
+    <html lang="de" className={`${inter.variable} ${instrumentSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-800 overflow-x-hidden">
         <SiteHeader />
 
