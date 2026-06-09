@@ -193,7 +193,7 @@ export default async function Home() {
       </section>
 
       {/* ── Städte ───────────────────────────────────────── */}
-      <section id="staedte" className="mt-24 pt-14 border-t border-slate-200 scroll-mt-20">
+      <section id="staedte" className="mt-24 pt-14 border-t border-slate-200">
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 text-center">
           Städte
         </h2>

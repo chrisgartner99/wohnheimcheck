@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -10,9 +10,9 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-// Space Grotesk = markante Überschriften
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+// Fraunces = markante, warm-redaktionelle Display-Schrift für Überschriften
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
 });
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}>
+    <html lang="de" className={`${inter.variable} ${fraunces.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-800 overflow-x-hidden">
         <SiteHeader />
 

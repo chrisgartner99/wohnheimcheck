@@ -7,7 +7,7 @@ export default function DatenschutzPage() {
 
       <Card className="mt-8 p-6 sm:p-8 text-slate-700">
       {/* ── Präambel ─────────────────────────────────── */}
-      <section id="m716" className="scroll-mt-20">
+      <section id="m716">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Pr&auml;ambel
         </h2>
@@ -31,7 +31,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Inhaltsübersicht ─────────────────────────── */}
-      <section className="mt-8 scroll-mt-20">
+      <section className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Inhalts&uuml;bersicht
         </h2>
@@ -62,7 +62,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Verantwortlicher ─────────────────────────── */}
-      <section id="m3" className="mt-8 scroll-mt-20">
+      <section id="m3" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Verantwortlicher
         </h2>
@@ -75,7 +75,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Übersicht der Verarbeitungen ──────────────── */}
-      <section id="mOverview" className="mt-8 scroll-mt-20">
+      <section id="mOverview" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           &Uuml;bersicht der Verarbeitungen
         </h2>
@@ -115,7 +115,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Maßgebliche Rechtsgrundlagen ──────────────── */}
-      <section id="m2427" className="mt-8 scroll-mt-20">
+      <section id="m2427" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Ma&szlig;gebliche Rechtsgrundlagen
         </h2>
@@ -174,7 +174,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Sicherheitsmaßnahmen ──────────────────────── */}
-      <section id="m27" className="mt-8 scroll-mt-20">
+      <section id="m27" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Sicherheitsma&szlig;nahmen
         </h2>
@@ -218,7 +218,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Übermittlung von personenbezogenen Daten ─── */}
-      <section id="m25" className="mt-8 scroll-mt-20">
+      <section id="m25" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           &Uuml;bermittlung von personenbezogenen Daten
         </h2>
@@ -238,7 +238,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Internationale Datentransfers ─────────────── */}
-      <section id="m24" className="mt-8 scroll-mt-20">
+      <section id="m24" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Internationale Datentransfers
         </h2>
@@ -279,7 +279,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Datenspeicherung und Löschung ─────────────── */}
-      <section id="m12" className="mt-8 scroll-mt-20">
+      <section id="m12" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Allgemeine Informationen zur Datenspeicherung und L&ouml;schung
         </h2>
@@ -296,7 +296,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Rechte der betroffenen Personen ──────────── */}
-      <section id="m10" className="mt-8 scroll-mt-20">
+      <section id="m10" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Rechte der betroffenen Personen
         </h2>
@@ -353,7 +353,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Webhosting ────────────────────────────────── */}
-      <section id="m225" className="mt-8 scroll-mt-20">
+      <section id="m225" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Bereitstellung des Onlineangebots und Webhosting
         </h2>
@@ -421,7 +421,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Bewertungsfunktion ────────────────────────── */}
-      <section id="mBewertung" className="mt-8 scroll-mt-20">
+      <section id="mBewertung" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Bewertungsfunktion und Speicherung von Inhalten
         </h2>
@@ -461,7 +461,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Kontaktaufnahme ───────────────────────────── */}
-      <section id="mKontakt" className="mt-8 scroll-mt-20">
+      <section id="mKontakt" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Kontaktaufnahme
         </h2>
@@ -475,7 +475,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Änderung und Aktualisierung ───────────────── */}
-      <section id="m15" className="mt-8 scroll-mt-20">
+      <section id="m15" className="mt-8">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           &Auml;nderung und Aktualisierung
         </h2>
@@ -488,7 +488,7 @@ export default function DatenschutzPage() {
       </section>
 
       {/* ── Begriffsdefinitionen ──────────────────────── */}
-      <section id="m42" className="mt-8 mb-12 scroll-mt-20">
+      <section id="m42" className="mt-8 mb-12">
         <h2 className="text-lg font-bold text-slate-900 mb-3 pb-2 border-b border-slate-200">
           Begriffsdefinitionen
         </h2>

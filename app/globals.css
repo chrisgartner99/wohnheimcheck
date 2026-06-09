@@ -3,6 +3,8 @@
 :root {
   --background: #f8fafc;
   --foreground: #1e293b;
+  /* Höhe des sticky Headers (h-16) – für den Anker-Scroll-Offset */
+  --header-height: 4rem;
 }
 
 /* inline nur für Werte, die erst zur Laufzeit gesetzt werden
@@ -11,7 +13,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
-  --font-display: var(--font-space-grotesk);
+  --font-display: var(--font-fraunces);
 }
 
 /* Force light mode regardless of OS setting.
@@ -21,6 +23,10 @@ html {
   color-scheme: light;
   /* sanftes Scrollen zu Anker-Sektionen (#staedte) */
   scroll-behavior: smooth;
+  /* Anker-Ziele um die Header-Höhe nach unten versetzen, damit der sticky
+     Header sie nicht verdeckt. Wirkt für native <a href="#…"> und für
+     Next-<Link>-Hash-Sprünge (scrollIntoView) gleichermaßen. */
+  scroll-padding-top: calc(var(--header-height) + 0.5rem);
 }
 
 body {
@@ -34,7 +40,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-space-grotesk), var(--font-inter), sans-serif;
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   overflow-wrap: break-word;
   text-wrap: balance;
 }
