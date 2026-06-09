@@ -34,7 +34,7 @@ export default function SiteHeader() {
           {/* Ankerlink in die Städte-Sektion der Startseite (existiert wirklich) */}
           <Link
             href="/#staedte"
-            className="rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-blue-700 hover:bg-slate-50 transition-colors whitespace-nowrap"
+            className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:text-blue-700 hover:bg-slate-50 transition-colors whitespace-nowrap"
           >
             <span className="sm:hidden">Entdecken</span>
             <span className="hidden sm:inline">Wohnheime entdecken</span>

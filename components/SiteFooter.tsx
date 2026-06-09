@@ -18,7 +18,7 @@ export default function SiteFooter() {
           >
             Wohnheim<span className="text-blue-600">Check</span>
           </Link>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-slate-500">
             Ehrliche Bewertungen von Studentenwohnheimen.
           </p>
         </div>

@@ -100,25 +100,25 @@ export default async function Home() {
         section to full viewport width from inside the max-w-5xl container.
       */}
       <section
-        className="relative -mt-10 sm:-mt-12 overflow-hidden bg-gradient-to-br from-blue-500 via-blue-600 to-blue-800"
+        className="relative -mt-10 sm:-mt-12 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900"
         style={{
           marginLeft: "calc(50% - 50vw)",
           marginRight: "calc(50% - 50vw)",
         }}
       >
-        {/* dezente, weiche Lichtflächen für Tiefe */}
+        {/* weiche Lichtflächen für Tiefe – eigener Clip-Layer, damit das
+            Such-Dropdown (absolut) nicht vom Hero abgeschnitten wird */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-sky-300/20 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 right-1/4 h-80 w-[36rem] rounded-full bg-blue-400/15 blur-3xl"
-        />
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-sky-300/20 blur-3xl" />
+          <div className="absolute -bottom-24 right-1/4 h-80 w-[36rem] rounded-full bg-blue-400/15 blur-3xl" />
+        </div>
         {/* Inhalt: zentriert, gleicher Container + Padding wie der Rest */}
         <div className="relative mx-auto flex max-w-[1140px] flex-col items-center justify-center px-6 py-20 text-center lg:min-h-[500px] lg:py-24">
           <div className="mx-auto max-w-2xl">
-            <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-white/70">
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-sky-100">
               Von Studierenden für Studierende
             </p>
             <h1 className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1] break-words">
@@ -285,7 +285,7 @@ export default async function Home() {
           </div>
           <Link
             href={leadCity ? `/${leadCity.slug}` : "/#staedte"}
-            className="inline-flex shrink-0 items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-blue-700 shadow-sm transition-colors hover:bg-blue-50"
+            className="inline-flex shrink-0 items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-blue-700 shadow-sm transition-colors hover:bg-blue-50 focus-visible:outline-white"
           >
             Wohnheim bewerten
           </Link>

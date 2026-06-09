@@ -44,13 +44,13 @@ export default function DormSearch({ dorms }: { dorms: Dorm[] }) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Stadt oder Wohnheim suchen…"
-        className="h-14 w-full rounded-[14px] border border-slate-200 bg-white pl-12 pr-4 text-slate-800 placeholder-slate-400 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        className="h-14 w-full rounded-[14px] border border-slate-200 bg-white pl-12 pr-4 text-slate-800 placeholder-slate-500 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
 
       {q.length > 1 && (
         <div className="absolute z-10 mt-1 w-full bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden">
           {results.length === 0 ? (
-            <p className="px-4 py-3 text-sm text-slate-400">
+            <p className="px-4 py-3 text-sm text-slate-500">
               Kein Wohnheim gefunden.
             </p>
           ) : (
@@ -66,7 +66,7 @@ export default function DormSearch({ dorms }: { dorms: Dorm[] }) {
                       {dorm.name}
                     </span>
                     {dorm.cities && (
-                      <span className="text-sm text-slate-400 ml-3 shrink-0">
+                      <span className="text-sm text-slate-500 ml-3 shrink-0">
                         {dorm.cities.name}
                       </span>
                     )}

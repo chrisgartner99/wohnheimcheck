@@ -19,6 +19,8 @@
    this rule appears after the import and wins the cascade. */
 html {
   color-scheme: light;
+  /* sanftes Scrollen zu Anker-Sektionen (#staedte) */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -34,4 +36,31 @@ h2,
 h3 {
   font-family: var(--font-space-grotesk), var(--font-inter), sans-serif;
   overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Sichtbarer, markenkonformer Fokuszustand für Tastaturnutzung (WCAG 2.4.7).
+   Links bekommen kein Default-Outline-Reset, daher gezielt hier. */
+a:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Bewegung reduzieren respektieren: Transitions/Animationen und Smooth-Scroll
+   praktisch deaktivieren. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
